@@ -1,6 +1,7 @@
 """An API and CLI for reporting CoCoRaHS observations."""
 
 from configparser import RawConfigParser
+from functools import partial
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import urljoin
@@ -8,7 +9,7 @@ from urllib.parse import urljoin
 import click
 import requests
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 
 class CoCoRaHS:
@@ -46,12 +47,40 @@ class CoCoRaHS:
         ).json()
 
 
+def partially(*args, **kwargs):
+    """
+    A decorator version of functools.partial
+
+    eg, this:
+        def _foo(x, y):
+            pass
+        foo = partial(_foo, 1)
+    is the same as:
+        @partially(1)
+        def foo(x, y):
+            pass
+    """
+
+    return lambda func: partial(func, *args, **kwargs)
+
+
+def read_cli_config():
+    config_file = Path(click.get_app_dir("cocorahs")) / "config.ini"
+
+    if config_file.exists():
+        parser = RawConfigParser()
+        parser.read([config_file])
+        return parser["CoCoRaHS"]
+
+
+@partially(auto_envvar_prefix="COCORAHS")
+@partially(default_map=read_cli_config())
 @click.command()
 @click.option("--station", help="The CoCoRaHS station code", default=None)
 @click.option("--username", help="Your CoCoRaHS username", prompt=True)
 @click.option("--password", help="Your CoCoRaHS password", prompt=True, hide_input=True)
 @click.argument("percipitation", type=lambda val: val if val == "T" else float(val))
-def cli(station, username, password, percipitation):
+def main(station, username, password, percipitation):
     """Report PERCIPITATION amount to CoCoRaHS. Enter T for trace amounts."""
     api = CoCoRaHS(username, password)
 
@@ -79,19 +108,6 @@ def cli(station, username, password, percipitation):
         print(
             f"Created new report: https://www.cocorahs.org/ViewData/ViewDailyPrecipReport.aspx?DailyPrecipReportID={resp['uid']}"
         )
-
-
-def read_cli_config():
-    config_file = Path(click.get_app_dir("cocorahs")) / "config.ini"
-
-    if config_file.exists():
-        parser = RawConfigParser()
-        parser.read([config_file])
-        return parser["CoCoRaHS"]
-
-
-def main():
-    cli(auto_envvar_prefix="COCORAHS", default_map=read_cli_config())
 
 
 if __name__ == "__main__":
