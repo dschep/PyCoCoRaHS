@@ -69,7 +69,7 @@ def cli(station, username, password, percipitation):
 
     resp = api.new_report(
         station,
-        percipitation="0.0" if percipitation == "T" else percipitation,
+        percipitation=0.0 if percipitation == "T" else percipitation,
         trace=percipitation == "T",
     )
 
