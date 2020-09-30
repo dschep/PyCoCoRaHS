@@ -1,0 +1,20 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.metadata]
+module = "cocorahs"
+# dist-name = "PyCoCoraHS"
+author = "Daniel Schep"
+author-email = "dschep@gmail.com"
+home-page = "https://github.com/dschep/PyCoCoraHS"
+description-file="README.md"
+classifiers = ["License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"]
+requires = [
+    "requests >= 2.24.0",
+    "click >= 7.1.2"
+]
+requires-python = ">= 3.6"
+
+[tool.flit.scripts]
+cocorahs = "cocorahs:main"
