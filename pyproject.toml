@@ -4,7 +4,6 @@ build-backend = "flit_core.buildapi"
 
 [tool.flit.metadata]
 module = "cocorahs"
-# dist-name = "PyCoCoraHS"
 author = "Daniel Schep"
 author-email = "dschep@gmail.com"
 home-page = "https://github.com/dschep/PyCoCoraHS"

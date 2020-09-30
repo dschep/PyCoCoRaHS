@@ -6,7 +6,7 @@ PyCoCoraHS is a Python package providing a CLI utility and an API for uploading 
 ## Installing
 Install this package using `pip`:
 ```shell
-python3 -m pip install --user PyCoCoraHS
+python3 -m pip install --user cocorahs
 ```
 
 ## Using the CLI
@@ -39,7 +39,7 @@ Here is a simple example of making a new report via the API:
 from cocorahs import CoCoRaHS
 
 api = CoCoRaHS(username='DanielSchep', password='hunter2')
-api.new_report(station='VA-RCC-15', percipitation='0.1', trace=False)
+api.new_report(station='VA-RCC-15', percipitation=0.1, trace=False)
 ```
 
 The `new_report` function also accepts an `observation_time` keyword argument. It should be a

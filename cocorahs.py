@@ -8,13 +8,13 @@ from urllib.parse import urljoin
 import click
 import requests
 
-__version__ = "0.1.0"
+__version__ = "0.1.2"
 
 
 class CoCoRaHS:
     root_url = "https://api2.cocorahs.org/api/"
 
-    def __init__(self, username, password):
+    def __init__(self, username: str, password: str):
         self.auth = (username, password)
 
     def request(self, method: str, url: str, **kwargs):
